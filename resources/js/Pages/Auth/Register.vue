@@ -1,9 +1,5 @@
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
@@ -22,91 +18,87 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Register" />
+        <Head title="Cadastro de acesso" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
+        <div class="mb-7">
+            <p class="font-mono text-xs uppercase tracking-[0.25em] text-cyan-400">Steelbras / Novo operador</p>
+            <h1 class="mt-3 text-2xl font-semibold tracking-tight text-slate-100">Criar acesso</h1>
+            <p class="mt-2 text-sm text-slate-400">Cadastre suas credenciais para acessar o monitoramento.</p>
+        </div>
 
-                <TextInput
+        <form class="space-y-5" @submit.prevent="submit">
+            <div class="space-y-2">
+                <label for="name" class="block font-mono text-xs uppercase tracking-wider text-slate-300">Nome</label>
+                <input
                     id="name"
                     type="text"
-                    class="mt-1 block w-full"
                     v-model="form.name"
                     required
                     autofocus
                     autocomplete="name"
+                    :aria-invalid="Boolean(form.errors.name)"
+                    class="block w-full rounded-lg border border-slate-700 bg-slate-950/70 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
                 />
-
-                <InputError class="mt-2" :message="form.errors.name" />
+                <p v-if="form.errors.name" class="font-mono text-xs text-rose-400">{{ form.errors.name }}</p>
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
+            <div class="space-y-2">
+                <label for="email" class="block font-mono text-xs uppercase tracking-wider text-slate-300">E-mail</label>
+                <input
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
                     v-model="form.email"
                     required
                     autocomplete="username"
+                    :aria-invalid="Boolean(form.errors.email)"
+                    class="block w-full rounded-lg border border-slate-700 bg-slate-950/70 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
                 />
-
-                <InputError class="mt-2" :message="form.errors.email" />
+                <p v-if="form.errors.email" class="font-mono text-xs text-rose-400">{{ form.errors.email }}</p>
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
+            <div class="space-y-2">
+                <label for="password" class="block font-mono text-xs uppercase tracking-wider text-slate-300">Senha</label>
+                <input
                     id="password"
                     type="password"
-                    class="mt-1 block w-full"
                     v-model="form.password"
                     required
                     autocomplete="new-password"
+                    :aria-invalid="Boolean(form.errors.password)"
+                    class="block w-full rounded-lg border border-slate-700 bg-slate-950/70 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
                 />
-
-                <InputError class="mt-2" :message="form.errors.password" />
+                <p v-if="form.errors.password" class="font-mono text-xs text-rose-400">{{ form.errors.password }}</p>
             </div>
 
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
-
-                <TextInput
+            <div class="space-y-2">
+                <label for="password_confirmation" class="block font-mono text-xs uppercase tracking-wider text-slate-300">Confirmar senha</label>
+                <input
                     id="password_confirmation"
                     type="password"
-                    class="mt-1 block w-full"
                     v-model="form.password_confirmation"
                     required
                     autocomplete="new-password"
+                    :aria-invalid="Boolean(form.errors.password_confirmation)"
+                    class="block w-full rounded-lg border border-slate-700 bg-slate-950/70 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
                 />
-
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
+                <p v-if="form.errors.password_confirmation" class="font-mono text-xs text-rose-400">{{ form.errors.password_confirmation }}</p>
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
+            <div class="flex flex-col-reverse items-center justify-between gap-4 pt-2 sm:flex-row">
                 <Link
                     :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="text-sm text-slate-400 underline decoration-slate-700 underline-offset-4 transition hover:text-cyan-300"
                 >
-                    Already registered?
+                    Já tem cadastro?
                 </Link>
 
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
+                <button
+                    type="submit"
                     :disabled="form.processing"
+                    class="inline-flex w-full items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 font-mono text-xs font-semibold uppercase tracking-widest text-emerald-300 transition hover:bg-emerald-500/20 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
                 >
-                    Register
-                </PrimaryButton>
+                    {{ form.processing ? 'Criando...' : 'Criar acesso' }}
+                </button>
             </div>
         </form>
     </GuestLayout>

@@ -1,27 +1,41 @@
-*.log
-.DS_Store
+# ==============================================================================
+# INDUSTRIAL IOT PLATFORM - AI CONTEXT ISOLATION
+# ==============================================================================
+
+# Core System Dependencies (Heavy Token Consumers)
+/node_modules/
+/vendor/
+
+# Environment Configurations & Secret Infrastructure (Never expose to LLM)
 .env
 .env.backup
 .env.production
-.phpactor.json
-.phpunit.result.cache
-/.codex
-/.cursor/
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
 /auth.json
-/node_modules
-/public/build
-/public/fonts-manifest.dev.json
-/public/hot
-/public/storage
 /storage/*.key
-/storage/pail
-/vendor
+
+# Compilation Artefacts & Runtime Assets
+/public/build/
+/public/hot/
+/public/storage/
+public/fonts-manifest.dev.json
+
+# Cache Engine & Development Helpers
+.phpunit.result.cache
+/.phpunit.cache/
+/storage/pail/
 _ide_helper.php
+*.log
+
+# Workspace & Ide Metadatas
+/.cursor/
+/.vscode/
+/.idea/
+/.codex/
+/.nova/
+/.zed/
 Homestead.json
 Homestead.yaml
+
+# System OS Garbage Files
+.DS_Store
 Thumbs.db
