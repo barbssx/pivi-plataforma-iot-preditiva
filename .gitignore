@@ -39,3 +39,7 @@ Homestead.yaml
 # System OS Garbage Files
 .DS_Store
 Thumbs.db
+
+.junie
+.ai
+.claude

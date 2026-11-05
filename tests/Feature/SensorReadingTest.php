@@ -115,7 +115,7 @@ class SensorReadingTest extends TestCase
     {
         $response = $this->postJson('/api/sensor-readings', $this->payload([
             'nivel_fluido' => 'BAIXO',
-            'rpm' => 1.5,
+            'rpm' => -5,
         ]));
 
         $response->assertUnprocessable()
@@ -148,6 +148,56 @@ class SensorReadingTest extends TestCase
         $response->assertOk()->assertJsonCount(20);
         $this->assertSame($readings[1]->id, $response->json('0.id'));
         $this->assertSame($readings[20]->id, $response->json('19.id'));
+    }
+
+    public function test_api_stores_full_esp32_payload_with_accelerometers_and_rpm_metadata(): void
+    {
+        $payload = [
+            'device_id' => 'ESP32_MOTO_01',
+            'sequence_number' => 125,
+            'uptime_ms' => 625000,
+            'recorded_at' => '2026-11-04T22:30:00Z',
+            'temperature' => 42.8,
+            'rpm' => 862.45,
+            'rpm_status' => 'MEDINDO',
+            'rpm_configuration' => 'AMBIGUA',
+            'rpm_total_pulses' => 8950,
+            'nivel_fluido' => null,
+            'status_operacional' => 'TESTE',
+            'accelerometers' => [
+                ['id' => 1, 'channel' => 0, 'x_g' => 0.12, 'y_g' => 0.15, 'z_g' => 1.01, 'rms_g' => 1.028],
+                ['id' => 2, 'channel' => 1, 'x_g' => 0.09, 'y_g' => 0.11, 'z_g' => 0.99, 'rms_g' => 1.000],
+                ['id' => 3, 'channel' => 2, 'x_g' => 0.14, 'y_g' => 0.10, 'z_g' => 1.02, 'rms_g' => 1.034],
+                ['id' => 4, 'channel' => 3, 'x_g' => 0.08, 'y_g' => 0.13, 'z_g' => 1.00, 'rms_g' => 1.012],
+            ],
+        ];
+
+        $response = $this->postJson('/api/sensor-readings', $payload);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.device_id', 'ESP32_MOTO_01')
+            ->assertJsonPath('data.sequence_number', 125)
+            ->assertJsonPath('data.uptime_ms', 625000)
+            ->assertJsonPath('data.temperature', 42.8)
+            ->assertJsonPath('data.rpm', 862.45)
+            ->assertJsonPath('data.rpm_status', 'MEDINDO')
+            ->assertJsonPath('data.rpm_configuration', 'AMBIGUA')
+            ->assertJsonPath('data.rpm_total_pulses', 8950)
+            ->assertJsonPath('data.vibracao_x', 0.12)
+            ->assertJsonPath('data.vibracao_y', 0.15)
+            ->assertJsonPath('data.vibracao_z', 1.01)
+            ->assertJsonPath('data.adxl1', 1.028)
+            ->assertJsonPath('data.adxl2', 1)
+            ->assertJsonPath('data.adxl3', 1.034)
+            ->assertJsonPath('data.adxl4', 1.012)
+            ->assertJsonPath('data.status_operacional', 'TESTE');
+
+        $this->assertDatabaseHas('sensor_readings', [
+            'device_id' => 'ESP32_MOTO_01',
+            'sequence_number' => 125,
+            'rpm_configuration' => 'AMBIGUA',
+            'status_operacional' => 'TESTE',
+        ]);
     }
 
     /** @return array<string, mixed> */

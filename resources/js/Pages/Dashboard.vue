@@ -188,10 +188,33 @@ onUnmounted(() => {
                     </div>
 
                     <div class="rounded-xl border border-slate-800 bg-slate-900/50 p-5 backdrop-blur-xl">
-                        <p class="font-mono text-xs uppercase tracking-wider text-slate-400">Rotação</p>
+                        <div class="flex items-center justify-between">
+                            <p class="font-mono text-xs uppercase tracking-wider text-slate-400">Rotação</p>
+                            <span v-if="latestReading.rpm_configuration" class="rounded bg-cyan-500/10 px-1.5 py-0.5 font-mono text-[10px] text-cyan-400">
+                                {{ latestReading.rpm_configuration }}
+                            </span>
+                        </div>
                         <p class="mt-3 font-mono text-xl font-semibold text-slate-100">
                             {{ latestReading.rpm ?? '—' }} <span class="text-sm text-slate-500">RPM</span>
                         </p>
+                    </div>
+                </div>
+
+                <div v-if="latestReading.adxl1 !== null && latestReading.adxl1 !== undefined" class="rounded-xl border border-slate-800 bg-slate-900/50 p-4 backdrop-blur-xl">
+                    <p class="font-mono text-xs uppercase tracking-wider text-slate-400 mb-3">Canais Acelerômetros (ADXL)</p>
+                    <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 font-mono text-xs">
+                        <div class="rounded-lg bg-slate-950/60 p-2.5 border border-slate-800/80">
+                            <span class="text-slate-500">ADXL 1:</span> <span class="font-semibold text-sky-400">{{ latestReading.adxl1 }} g</span>
+                        </div>
+                        <div class="rounded-lg bg-slate-950/60 p-2.5 border border-slate-800/80">
+                            <span class="text-slate-500">ADXL 2:</span> <span class="font-semibold text-emerald-400">{{ latestReading.adxl2 }} g</span>
+                        </div>
+                        <div class="rounded-lg bg-slate-950/60 p-2.5 border border-slate-800/80">
+                            <span class="text-slate-500">ADXL 3:</span> <span class="font-semibold text-amber-400">{{ latestReading.adxl3 }} g</span>
+                        </div>
+                        <div class="rounded-lg bg-slate-950/60 p-2.5 border border-slate-800/80">
+                            <span class="text-slate-500">ADXL 4:</span> <span class="font-semibold text-rose-400">{{ latestReading.adxl4 }} g</span>
+                        </div>
                     </div>
                 </div>
 
