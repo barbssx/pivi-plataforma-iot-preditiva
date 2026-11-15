@@ -1,5 +1,6 @@
 {
     "$schema": "https://www.schemastore.org/package.json",
+    "name": "pivi-plataforma-iot-preditiva",
     "private": true,
     "type": "module",
     "scripts": {
